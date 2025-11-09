@@ -500,6 +500,319 @@
             background: #00d638; box-shadow: inset 0 0 14px rgba(0,255,65,0.7);
         }
         
+        /* MOBILE RESPONSIVE STYLES */
+        @media (max-width: 768px) {
+            /* Navigation */
+            .nav-container {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+            
+            .nav-links a {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Hero Section */
+            .hero h1 {
+                font-size: 2rem;
+                white-space: normal;
+                text-align: center;
+            }
+            
+            .hero .subtitle {
+                font-size: 1rem;
+            }
+            
+            .cta-button {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Section padding */
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .section h2 {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+            
+            /* About Section */
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .profile-image {
+                width: 200px;
+                height: 200px;
+                margin: 0 auto;
+            }
+            
+            .about-text {
+                font-size: 1rem;
+            }
+            
+            /* Skills Grid */
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            /* Certificates Grid */
+            .cert-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .cert-card {
+                padding: 1.5rem;
+            }
+            
+            /* Timeline */
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 60px) !important;
+                margin-left: 60px !important;
+            }
+            
+            .timeline-dot {
+                left: 20px;
+            }
+            
+            .timeline-content h3 {
+                font-size: 1.1rem;
+            }
+            
+            .timeline-content .position,
+            .timeline-content .period,
+            .timeline-content ul li {
+                font-size: 0.85rem;
+            }
+            
+            /* Projects Grid */
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .project-card {
+                min-width: unset;
+            }
+            
+            .project-info {
+                padding: 1.5rem;
+            }
+            
+            .project-info h3 {
+                font-size: 1.2rem;
+            }
+            
+            .project-info p {
+                font-size: 0.9rem;
+            }
+            
+            /* Modal */
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+                max-height: 85vh;
+            }
+            
+            .modal-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .modal-header p {
+                font-size: 0.95rem;
+            }
+            
+            /* Carousel */
+            .carousel-wrapper {
+                height: 250px;
+            }
+            
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .carousel-prev {
+                left: 0.5rem;
+            }
+            
+            .carousel-next {
+                right: 0.5rem;
+            }
+            
+            .carousel-dot {
+                width: 10px;
+                height: 10px;
+            }
+            
+            /* Footer */
+            footer {
+                padding: 1.5rem 1rem;
+            }
+            
+            footer p {
+                font-size: 0.85rem;
+            }
+            
+            .social-links {
+                gap: 1.5rem;
+            }
+            
+            .social-links a {
+                font-size: 1.3rem;
+            }
+            
+            /* Disable complex animations on mobile */
+            .skill-card:hover,
+            .cert-card:hover,
+            .project-card:hover {
+                transform: translateY(-10px) scale(1.02);
+            }
+            
+            .floating-orb {
+                display: none;
+            }
+            
+            /* Touch-friendly interaction */
+            .skill-card,
+            .cert-card,
+            .project-card {
+                cursor: pointer;
+                -webkit-tap-highlight-color: rgba(0, 255, 65, 0.2);
+            }
+            
+            /* Improve touch targets */
+            .nav-links a,
+            .cta-button,
+            .carousel-nav,
+            .carousel-dot,
+            .modal-close,
+            .social-links a {
+                min-width: 44px;
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* Extra small screens */
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                gap: 0.5rem;
+            }
+            
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.5rem;
+            }
+            
+            .section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .about-text {
+                font-size: 0.9rem;
+            }
+            
+            .skill-card,
+            .cert-card {
+                padding: 1.2rem;
+            }
+            
+            .skill-card h3,
+            .cert-card h3 {
+                font-size: 1rem;
+            }
+            
+            .carousel-wrapper {
+                height: 200px;
+            }
+            
+            .modal-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .tech-tag {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.6rem;
+            }
+        }
+        
+        /* Tablet Portrait */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .profile-image {
+                margin: 0 auto;
+            }
+            
+            .skills-grid,
+            .cert-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 80px) !important;
+                margin-left: 80px !important;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+        }
+        
         /* Floating orbs animation */
         .floating-orb {
             position: fixed;
@@ -1105,6 +1418,8 @@
                 this.currentModal = null;
                 this.currentSlide = 0;
                 this.autoSlideTimer = null;
+                this.touchStartX = 0;
+                this.touchEndX = 0;
                 this.init();
             }
 
@@ -1147,6 +1462,33 @@
                     if (e.key === 'ArrowLeft') this.prevSlide();
                     if (e.key === 'ArrowRight') this.nextSlide();
                 });
+                
+                // Add touch swipe support for carousel
+                document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+                    wrapper.addEventListener('touchstart', (e) => {
+                        this.touchStartX = e.changedTouches[0].screenX;
+                    }, false);
+                    
+                    wrapper.addEventListener('touchend', (e) => {
+                        this.touchEndX = e.changedTouches[0].screenX;
+                        this.handleSwipe();
+                    }, false);
+                });
+            }
+            
+            handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = this.touchStartX - this.touchEndX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        // Swiped left - next slide
+                        this.nextSlide();
+                    } else {
+                        // Swiped right - previous slide
+                        this.prevSlide();
+                    }
+                }
             }
 
             openModal(projectId) {
@@ -1271,11 +1613,14 @@
         // Parallax scrolling effect
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.hero-content, .matrix-bg');
-            parallaxElements.forEach(el => {
-                const speed = el.classList.contains('hero-content') ? 0.5 : 0.3;
-                el.style.transform = `translateY(${scrolled * speed}px)`;
-            });
+            // Disable parallax on mobile for better performance
+            if (window.innerWidth > 768) {
+                const parallaxElements = document.querySelectorAll('.hero-content, .matrix-bg');
+                parallaxElements.forEach(el => {
+                    const speed = el.classList.contains('hero-content') ? 0.5 : 0.3;
+                    el.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            }
         });
         
         // Magnetic button effect
@@ -1324,16 +1669,19 @@
         
         // Create floating orbs
         function createFloatingOrbs() {
-            for (let i = 0; i < 5; i++) {
-                const orb = document.createElement('div');
-                orb.classList.add('floating-orb');
-                orb.style.width = `${Math.random() * 200 + 100}px`;
-                orb.style.height = orb.style.width;
-                orb.style.left = `${Math.random() * 100}%`;
-                orb.style.top = `${Math.random() * 100}%`;
-                orb.style.animationDelay = `${Math.random() * 5}s`;
-                orb.style.animationDuration = `${Math.random() * 10 + 15}s`;
-                document.body.appendChild(orb);
+            // Only create orbs on desktop for performance
+            if (window.innerWidth > 768) {
+                for (let i = 0; i < 5; i++) {
+                    const orb = document.createElement('div');
+                    orb.classList.add('floating-orb');
+                    orb.style.width = `${Math.random() * 200 + 100}px`;
+                    orb.style.height = orb.style.width;
+                    orb.style.left = `${Math.random() * 100}%`;
+                    orb.style.top = `${Math.random() * 100}%`;
+                    orb.style.animationDelay = `${Math.random() * 5}s`;
+                    orb.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                    document.body.appendChild(orb);
+                }
             }
         }
         createFloatingOrbs();
@@ -1438,27 +1786,30 @@
         `;
         document.body.appendChild(cursorGlow);
         
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.display = 'block';
-            cursorGlow.style.display = 'block';
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            cursorGlow.style.left = (e.clientX + 6) + 'px';
-            cursorGlow.style.top = (e.clientY + 6) + 'px';
-        });
-        
-        document.querySelectorAll('a, button, .project-card, .skill-card, .cert-card').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(1.5)';
-                cursor.style.borderColor = '#fff';
-                cursorGlow.style.background = '#fff';
+        // Only show custom cursor on desktop
+        if (window.innerWidth > 768) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.display = 'block';
+                cursorGlow.style.display = 'block';
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                cursorGlow.style.left = (e.clientX + 6) + 'px';
+                cursorGlow.style.top = (e.clientY + 6) + 'px';
             });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.borderColor = '#00ff41';
-                cursorGlow.style.background = '#00ff41';
+            
+            document.querySelectorAll('a, button, .project-card, .skill-card, .cert-card').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(1.5)';
+                    cursor.style.borderColor = '#fff';
+                    cursorGlow.style.background = '#fff';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                    cursor.style.borderColor = '#00ff41';
+                    cursorGlow.style.background = '#00ff41';
+                });
             });
-        });
+        }
         
         // Section number counter animation
         function animateCounter(element, target, duration = 2000) {
@@ -1483,6 +1834,9 @@
         
         // Random code snippets floating effect
         function createCodeSnippet() {
+            // Reduce snippets on mobile for performance
+            if (window.innerWidth <= 768 && Math.random() > 0.5) return;
+            
             const snippets = ['{ }', '< >', '( )', '[ ]', '/* */', '// ', '=> ', ':: '];
             const snippet = document.createElement('div');
             snippet.textContent = snippets[Math.floor(Math.random() * snippets.length)];
@@ -1509,7 +1863,7 @@
             }).onfinish = () => snippet.remove();
         }
         
-        setInterval(createCodeSnippet, 2000);
+        setInterval(createCodeSnippet, window.innerWidth <= 768 ? 4000 : 2000);
         
         // Smooth reveal for timeline items
         const timelineObserver = new IntersectionObserver((entries) => {
