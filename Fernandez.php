@@ -28,6 +28,12 @@
             backdrop-filter: blur(10px);
             border-bottom: 2px solid #00ff41;
             z-index: 1000; padding: 1rem 0;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        nav.nav-hidden {
+            transform: translateY(-100%);
         }
 
         .nav-container {
@@ -56,36 +62,95 @@
         .hero {
             height: 100vh; display: flex; align-items: center; justify-content: center;
             position: relative; background: linear-gradient(45deg, #000, #001a00);
+            overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(0,255,65,0.1) 0%, transparent 70%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+        .hero::after {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,65,0.03) 2px, rgba(0,255,65,0.03) 4px);
+            animation: scanlines 8s linear infinite;
+        }
+        @keyframes heroGlow {
+            from { transform: translate(-25%, -25%) scale(1); }
+            to { transform: translate(-25%, -25%) scale(1.2); }
+        }
+        @keyframes scanlines {
+            from { transform: translateY(0); }
+            to { transform: translateY(10px); }
         }
 
-        .hero-content { text-align: center; z-index: 2; }
+        .hero-content { text-align: center; z-index: 2; position: relative; }
 
         .hero h1 {
             font-size: 4rem; margin-bottom: 1rem;
             white-space: nowrap; overflow: hidden; width: fit-content; margin: 0 auto 1rem;
+            position: relative;
+            background: linear-gradient(90deg, #00ff41, #00ff41, #ffffff, #00ff41, #00ff41);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 3s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(0,255,65,0.5));
+        }
+        @keyframes textShimmer {
+            to { background-position: 200% center; }
         }
         .hero h1::after {
-            content: ''; display: inline-block; width: 2px; height: 1em; background: #00ff41;
-            margin-left: 6px; animation: caretBlink .8s steps(1, end) infinite; vertical-align: -0.15em;
+            content: ''; display: inline-block; width: 2px; height: 1em; 
+            background: linear-gradient(to bottom, transparent, #00ff41, transparent);
+            margin-left: 6px; animation: caretBlink .8s steps(1, end) infinite, caretGlow 2s ease-in-out infinite;
+            vertical-align: -0.15em;
         }
         @keyframes caretBlink { 50% { opacity: 0; } }
+        @keyframes caretGlow {
+            0%, 100% { box-shadow: 0 0 5px #00ff41; }
+            50% { box-shadow: 0 0 20px #00ff41, 0 0 30px #00ff41; }
+        }
 
         .hero .subtitle {
-            font-size: 1.5rem; opacity: 0; animation: fadeInUp 1s ease 4s both; margin-bottom: 2rem;
+            font-size: 1.5rem; opacity: 0; animation: fadeInUp 1s ease 4s both, float 3s ease-in-out infinite 5s; 
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(0,255,65,0.5);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
         .cta-button {
             display: inline-block; padding: 1rem 2rem; background: transparent;
             border: 2px solid #00ff41; color: #00ff41; text-decoration: none; transition: all 0.3s ease;
-            opacity: 0; animation: fadeInUp 1s ease 5s both; position: relative; overflow: hidden;
+            opacity: 0; animation: fadeInUp 1s ease 5s both, pulse 2s ease-in-out infinite 6s; 
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,255,65,0.2), inset 0 0 20px rgba(0,255,65,0.1);
         }
-        .cta-button:hover { background: #00ff41; color: #000; box-shadow: 0 0 30px #00ff41; }
+        .cta-button:hover { 
+            background: #00ff41; color: #000; 
+            box-shadow: 0 0 40px #00ff41, 0 0 60px rgba(0,255,65,0.5), inset 0 0 20px rgba(0,255,65,0.3);
+            transform: translateY(-5px) scale(1.05);
+        }
         .cta-button::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             transition: left 0.5s;
         }
         .cta-button:hover::before { left: 100%; }
+        .cta-button::after {
+            content: ''; position: absolute; inset: -2px;
+            background: linear-gradient(45deg, transparent, #00ff41, transparent);
+            border-radius: inherit; opacity: 0; transition: opacity 0.3s;
+            z-index: -1; animation: borderRotate 3s linear infinite;
+        }
+        .cta-button:hover::after { opacity: 0.7; }
+        @keyframes borderRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
         /* Section Styling */
         .section {
@@ -99,7 +164,14 @@
         }
         .section h2::after {
             content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
-            width: 100px; height: 3px; background: linear-gradient(90deg, #00ff41, #008f11); animation: pulse 2s infinite;
+            width: 100px; height: 3px; 
+            background: linear-gradient(90deg, transparent, #00ff41, #00ff41, transparent); 
+            animation: underlinePulse 2s ease-in-out infinite;
+            box-shadow: 0 0 10px #00ff41;
+        }
+        @keyframes underlinePulse {
+            0%, 100% { width: 100px; opacity: 1; }
+            50% { width: 150px; opacity: 0.7; box-shadow: 0 0 20px #00ff41; }
         }
 
         /* About Section */
@@ -107,10 +179,20 @@
 
         .profile-image {
             width: 300px; height: 300px; border-radius: 50%; border: 3px solid #00ff41;
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3); transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3); transition: all 0.5s ease;
             display: block; object-fit: cover; object-position: center;
+            position: relative; animation: profileFloat 4s ease-in-out infinite;
         }
-        .profile-image:hover { transform: scale(1.05) rotate(5deg); box-shadow: 0 0 50px rgba(0, 255, 65, 0.5); }
+        .profile-image:hover { 
+            transform: scale(1.1) rotate(5deg); 
+            box-shadow: 0 0 60px rgba(0, 255, 65, 0.6), 0 0 100px rgba(0, 255, 65, 0.3);
+            border-color: #fff;
+            filter: brightness(1.1) contrast(1.1);
+        }
+        @keyframes profileFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-15px) scale(1.02); }
+        }
 
         .about-text { font-size: 1.1rem; line-height: 1.8; }
 
@@ -118,25 +200,95 @@
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
         .skill-card {
             background: rgba(0, 255, 65, 0.1); border: 1px solid #00ff41; padding: 2rem; border-radius: 10px;
-            transition: all 0.3s ease; position: relative; overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; overflow: hidden;
         }
-        .skill-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 255, 65, 0.3); background: rgba(0, 255, 65, 0.2); }
         .skill-card::before {
             content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(45deg, #00ff41, #008f11, #00ff41); z-index: -1; opacity: 0;
-            transition: opacity 0.3s ease; border-radius: 10px;
+            background: linear-gradient(45deg, #00ff41, #008f11, #00ff41, #008f11);
+            background-size: 400% 400%; z-index: -1; opacity: 0;
+            transition: opacity 0.5s ease; border-radius: 10px;
+            animation: gradientShift 3s ease infinite;
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .skill-card::after {
+            content: ''; position: absolute; inset: 0; 
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0,255,65,0.2), transparent 60%);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .skill-card:hover { 
+            transform: translateY(-15px) scale(1.03); 
+            box-shadow: 0 20px 40px rgba(0, 255, 65, 0.4), 0 0 60px rgba(0, 255, 65, 0.2);
+            background: rgba(0, 255, 65, 0.15);
         }
         .skill-card:hover::before { opacity: 1; }
-        .skill-progress { width: 100%; height: 8px; background: rgba(0, 255, 65, 0.2); margin-top: 1rem; border-radius: 4px; overflow: hidden; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, #00ff41, #008f11); width: 0; transition: width 2s ease; animation: shimmer 2s infinite; }
+        .skill-card:hover::after { opacity: 1; }
+        .skill-progress { width: 100%; height: 8px; background: rgba(0, 255, 65, 0.2); margin-top: 1rem; border-radius: 4px; overflow: hidden; position: relative; }
+        .skill-progress::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: progressShimmer 2s infinite;
+        }
+        @keyframes progressShimmer {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(200%); }
+        }
+        .progress-bar { 
+            height: 100%; 
+            background: linear-gradient(90deg, #00ff41, #00d638, #00ff41);
+            background-size: 200% 100%;
+            width: 0; transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: progressGlow 2s ease-in-out infinite;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,255,65,0.8), inset 0 0 10px rgba(255,255,255,0.3);
+        }
+        @keyframes progressGlow {
+            0%, 100% { background-position: 0% 50%; filter: brightness(1); }
+            50% { background-position: 100% 50%; filter: brightness(1.3); }
+        }
 
         /* Certificates Section */
         .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
         .cert-card {
             background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), rgba(0, 143, 17, 0.1));
-            border: 2px solid #00ff41; padding: 2rem; border-radius: 15px; transition: all 0.3s ease; position: relative;
+            border: 2px solid #00ff41; padding: 2rem; border-radius: 15px; 
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;
+            overflow: hidden;
         }
-        .cert-card:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 255, 65, 0.4); }
+        .cert-card::before {
+            content: ''; position: absolute; inset: -100%; 
+            background: conic-gradient(from 0deg, transparent, #00ff41, transparent 30%);
+            animation: certRotate 4s linear infinite; opacity: 0; transition: opacity 0.5s;
+        }
+        .cert-card:hover::before { opacity: 0.3; }
+        @keyframes certRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .cert-card:hover { 
+            transform: scale(1.08) translateY(-10px); 
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.5), 0 20px 40px rgba(0, 255, 65, 0.3);
+            border-color: #fff;
+        }
+        
+        .cert-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .cert-card .cert-issuer {
+            color: #00d638;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .cert-card .cert-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
 
         /* Experience / Education Timeline */
         .timeline { position: relative; margin: 2rem 0; }
@@ -153,22 +305,73 @@
         }
         .timeline-item:nth-child(even) .timeline-content { margin-left: 55%; }
         .timeline-dot {
-  position: absolute; left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px; height: 20px; background: #00ff41; border-radius: 50%;
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
-  animation: dotPulse 2s infinite; /* was: pulse 2s infinite */
-}
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px; height: 20px; background: #00ff41; border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            animation: dotPulse 2s infinite;
+        }
+        
+        .timeline-content h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .timeline-content .position {
+            color: #00d638;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-content .period {
+            color: #008f11;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .timeline-content ul li {
+            padding-left: 1.5rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .timeline-content ul li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #00ff41;
+        }
 
         @keyframes slideIn { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes dotPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+            50%      { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+        }
 
         /* Projects Section */
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
         .project-card { 
             background: rgba(0, 255, 65, 0.05); border: 1px solid #00ff41; border-radius: 15px; 
-            overflow: hidden; transition: all 0.3s ease; position: relative; cursor: pointer;
+            overflow: hidden; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            position: relative; cursor: pointer;
         }
-        .project-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 255, 65, 0.3); }
+        .project-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(0,255,65,0.1), transparent, rgba(0,255,65,0.1));
+            opacity: 0; transition: opacity 0.5s;
+        }
+        .project-card:hover::before { opacity: 1; }
+        .project-card:hover { 
+            transform: translateY(-15px) rotateX(5deg) scale(1.02); 
+            box-shadow: 0 25px 50px rgba(0, 255, 65, 0.4), 0 0 80px rgba(0, 255, 65, 0.2);
+            border-color: #fff;
+        }
 
         .project-image {
             height: 200px; background: #001a00;
@@ -296,11 +499,78 @@
         .carousel-wrapper::-webkit-scrollbar-thumb:hover {
             background: #00d638; box-shadow: inset 0 0 14px rgba(0,255,65,0.7);
         }
-        @keyframes dotPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
-  50%      { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
-}
-
+        
+        /* Floating orbs animation */
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,255,65,0.3), transparent);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatOrb 20s infinite ease-in-out;
+        }
+        
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.2); }
+            66% { transform: translate(-100px, 100px) scale(0.8); }
+        }
+        
+        /* Text glitch effect */
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+        
+        .glitch:hover::before {
+            animation: glitch-1 0.3s infinite;
+            color: #ff00ff;
+            z-index: -1;
+        }
+        
+        .glitch:hover::after {
+            animation: glitch-2 0.3s infinite;
+            color: #00ffff;
+            z-index: -2;
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% { transform: translate(0); opacity: 0.7; }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, -2px); }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% { transform: translate(0); opacity: 0.7; }
+            25% { transform: translate(2px, -2px); }
+            50% { transform: translate(-2px, 2px); }
+            75% { transform: translate(2px, 2px); }
+        }
+        
+        /* Holographic effect */
+        .holographic {
+            position: relative;
+            background: linear-gradient(45deg, #00ff41, #00d638, #00ff41, #00d638);
+            background-size: 400% 400%;
+            animation: holographicShift 3s ease infinite;
+        }
+        
+        @keyframes holographicShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
     </style>
 </head>
 <body>
@@ -308,7 +578,7 @@
 
     <nav>
         <div class="nav-container">
-            <div class="logo">&lt;/DEV&gt;</div>
+            <div class="logo glitch" data-text="&lt;/DEV&gt;">&lt;/DEV&gt;</div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -334,19 +604,19 @@
             <img src="fernandez.jpg" alt="Russel James Fernandez" class="profile-image">
             <div class="about-text">
                 <p>
-        Hi! I’m <strong>Russel James Fernandez</strong>, a <strong>4th-year BSIT student at Pamantasan ng Lungsod ng Maynila</strong>.
+        Hi! I'm <strong>Russel James Fernandez</strong>, a <strong>4th-year BSIT student at Pamantasan ng Lungsod ng Maynila</strong>.
         I build clean, responsive web experiences and love crafting UI/UX that feels effortless.
-        Beyond design, I’m practicing backend development and sharpening my problem-solving through projects.
+        Beyond design, I'm practicing backend development and sharpening my problem-solving through projects.
       </p>
       <br>
       <p>
-        When I’m not coding, you’ll catch me <strong>reading law books</strong>, <strong>creating web designs</strong>,
+        When I'm not coding, you'll catch me <strong>reading law books</strong>, <strong>creating web designs</strong>,
         exploring <strong>UI/UX</strong>, <strong>practicing backend</strong>, and relaxing with a <strong>mobile game</strong>.
-        I’m working toward a unique path—<strong>to become both a lawyer and an IT professional</strong>—so I can bridge
+        I'm working toward a unique path—<strong>to become both a lawyer and an IT professional</strong>—so I can bridge
         technology and the law to create secure, inclusive digital spaces.
       </p>
       <br>
-      <p><em>“I stand here today because someone believed in me, and I owe it to the children to believe in them. Khop khun khap.”</em></p>
+      <p><em>"I stand here today because someone believed in me, and I owe it to the children to believe in them. Khop khun khap."</em></p>
             </div>
         </div>
     </section>
@@ -376,65 +646,114 @@
         <h2>Certifications</h2>
         <div class="cert-grid">
             <div class="cert-card">
-                <h3>AWS Solutions Architect Professional</h3>
-                <p>Amazon Web Services • 2023</p>
-                <p>Advanced cloud architecture and migration strategies</p>
+                <h3>Introduction to IT Acquisition</h3>
+                <p class="cert-issuer">University of the Philippines System • 2024</p>
+                <p class="cert-description">Comprehensive training on IT procurement processes and strategic acquisition management</p>
             </div>
             <div class="cert-card">
-                <h3>Certified Ethical Hacker (CEH)</h3>
-                <p>EC-Council • 2022</p>
-                <p>Penetration testing and vulnerability assessment</p>
+                <h3>AI in Business Analytics</h3>
+                <p class="cert-issuer">Ateneo De Manila University • 2024</p>
+                <p class="cert-description">The Future of Business Planning and Decision-Making using AI technologies</p>
             </div>
             <div class="cert-card">
-                <h3>Microsoft Azure DevOps Engineer</h3>
-                <p>Microsoft • 2023</p>
-                <p>CI/CD pipelines and infrastructure automation</p>
+                <h3>AI-Powered Future</h3>
+                <p class="cert-issuer">DICT Regional Office V, Legazpi City • 2024</p>
+                <p class="cert-description">Mastering Prompt Engineering in Generative AI for practical applications</p>
             </div>
             <div class="cert-card">
-                <h3>CISSP</h3>
-                <p>ISC2 • 2021</p>
-                <p>Information security and risk management</p>
+                <h3>AI Literacy for Students</h3>
+                <p class="cert-issuer">Tagpros Education • 2024</p>
+                <p class="cert-description">Critical Thinking and Creativity in the age of artificial intelligence</p>
+            </div>
+            <div class="cert-card">
+                <h3>Building Web Solutions Workshop</h3>
+                <p class="cert-issuer">Google Developer Group • 2024</p>
+                <p class="cert-description">Using Gemini and Firebase Studio for modern web development</p>
+            </div>
+            <div class="cert-card">
+                <h3>Kwentuhang Cybersecurity</h3>
+                <p class="cert-issuer">Philippine Institute of Cyber Security Professionals • 2024</p>
+                <p class="cert-description">Building True Cyber Resilience in organizations and systems</p>
             </div>
         </div>
     </section>
 
     <section id="experience" class="section">
-        <h2>Educational Attainment</h2>
+        <h2>Experience & Education</h2>
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <h3>Primary</h3>
-                    <p>Antonio Regidor Elementary School</p>
-                    <p>2010 - 2016</p>
-                    <p>7th Top</p>
+                    <h3>Amazon Web Services Cloud Club – Haribon (AWSCC Haribon)</h3>
+                    <p class="position">IoT & Robotics Team | Volunteer</p>
+                    <p class="period">2024 – Present</p>
+                    <ul>
+                        <li>Strengthens technical expertise by developing innovative IoT and software solutions using AWS technologies</li>
+                        <li>Collaborate with peers to design and deploy cloud-integrated robotics systems</li>
+                    </ul>
                 </div>
                 <div class="timeline-dot"></div>
             </div>
+            
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <h3>Junior Highschool</h3>
-                    <p>Cayetano Arellano High School</p>
-                    <p>2016 - 2020</p>
-                    <p>6th Honorable Mention | With High Honor</p>
+                    <h3>Microsoft Student Community – PLM</h3>
+                    <p class="position">Lead Writer & Head of Publication</p>
+                    <p class="period">2024 – 2025</p>
+                    <ul>
+                        <li>Supervised newsletters, editorial content, and social media releases for Microsoft-related initiatives and campaigns</li>
+                    </ul>
                 </div>
                 <div class="timeline-dot"></div>
             </div>
+            
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <h3>Senior Highschool</h3>
-                    <p>Golden Success College Manila</p>
-                    <p>Humanities and Social Sciences</p>
-                    <p>2020 - 2022</p>
+                    <h3>Google Developer Student Clubs (GDSC – PLM)</h3>
+                    <p class="position">Technology Department | Mobile Developer</p>
+                    <p class="period">2024 – Present</p>
+                    <ul>
+                        <li>Develops and maintains mobile applications aligned with GDSC projects and community goals</li>
+                        <li>Collaborates with developers and designers to implement innovative technology-driven solutions</li>
+                    </ul>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Pamantasan ng Lungsod ng Maynila</h3>
+                    <p class="position">Bachelor of Science in Information Technology</p>
+                    <p class="period">2022 – 2026</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Golden Success College Manila</h3>
+                    <p class="position">Senior High School - Humanities and Social Sciences</p>
+                    <p class="period">2020 – 2022</p>
                     <p>Salutatorian | With Honors</p>
                 </div>
                 <div class="timeline-dot"></div>
             </div>
+            
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <h3>Tertiary</h3>
-                    <p>Pamantasan ng Lungsod ng Maynila</p>
-                    <p>Bachelor of Science in Information Technology</p>
-                    <p>2022 - 2026</p>
+                    <h3>Cayetano Arellano High School</h3>
+                    <p class="position">Junior High School</p>
+                    <p class="period">2016 – 2020</p>
+                    <p>6th Honorable Mention | With High Honor</p>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Antonio Regidor Elementary School</h3>
+                    <p class="position">Primary Education</p>
+                    <p class="period">2010 – 2016</p>
+                    <p>7th Top</p>
                 </div>
                 <div class="timeline-dot"></div>
             </div>
@@ -488,7 +807,7 @@
         </div>
     </section>
 
-    <!-- Project Modals (slides updated to real images/videos) -->
+    <!-- Project Modals -->
     <div id="modal-securevault" class="modal">
         <div class="modal-content">
             <button class="modal-close">&times;</button>
@@ -686,8 +1005,21 @@
 
         // Hover tilt on cards
         document.querySelectorAll('.skill-card, .cert-card, .project-card').forEach(card => {
-            card.addEventListener('mouseenter', function(){ this.style.transform = 'translateY(-10px) rotateX(5deg)'; });
-            card.addEventListener('mouseleave', function(){ this.style.transform = 'translateY(0) rotateX(0deg)'; });
+            card.addEventListener('mouseenter', function(){ 
+                this.style.transform = 'translateY(-15px) rotateX(5deg) scale(1.02)'; 
+            });
+            card.addEventListener('mouseleave', function(){ 
+                this.style.transform = 'translateY(0) rotateX(0deg) scale(1)'; 
+            });
+            
+            // Advanced mouse tracking for glow effect
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                this.style.setProperty('--mouse-x', x + '%');
+                this.style.setProperty('--mouse-y', y + '%');
+            });
         });
 
         // Subtitle typing effect
@@ -728,7 +1060,7 @@
             const fullText = titleEl.textContent.trim();
             titleEl.textContent = '';
 
-            const delayBeforeStart = 1000; // ms
+            const delayBeforeStart = 1000;
             const perCharMs = 80;
             const skipSoundFor = new Set([' ', '\n', '\t']);
 
@@ -751,7 +1083,6 @@
                 osc.stop(audioCtx.currentTime + 0.05);
             }
 
-            // Start audio after user gesture if needed
             ['pointerdown','keydown'].forEach(ev =>
                 window.addEventListener(ev, ensureAudioCtx, { once: true })
             );
@@ -768,12 +1099,12 @@
             }, delayBeforeStart);
         })();
 
-        // Modal and Carousel System (auto-slide disabled)
+        // Modal and Carousel System
         class ProjectModal {
             constructor() {
                 this.currentModal = null;
                 this.currentSlide = 0;
-                this.autoSlideTimer = null; // kept for safety, but unused
+                this.autoSlideTimer = null;
                 this.init();
             }
 
@@ -842,7 +1173,6 @@
             closeModal() {
                 if (!this.currentModal) return;
 
-                // Pause any playing videos inside the modal
                 this.currentModal.querySelectorAll('video').forEach(v => {
                     try { v.pause(); v.currentTime = 0; } catch(_) {}
                 });
@@ -854,7 +1184,7 @@
                     this.currentModal.classList.remove('active');
                     document.body.style.overflow = '';
                     this.currentModal = null;
-                    this.stopAutoSlide(); // no-op but safe
+                    this.stopAutoSlide();
                 }, 300);
             }
 
@@ -887,7 +1217,6 @@
                     const isActive = i === this.currentSlide;
                     s.classList.toggle('active', isActive);
 
-                    // Video handling
                     const vid = s.querySelector('video');
                     if (vid) {
                         try {
@@ -900,13 +1229,12 @@
                 dots.forEach((d, i) => d.classList.toggle('active', i === this.currentSlide));
             }
 
-            // Kept as safe no-ops / cleanup
-            startAutoSlide() { /* disabled */ }
+            startAutoSlide() { }
             stopAutoSlide() {
                 if (this.autoSlideTimer) clearInterval(this.autoSlideTimer);
                 this.autoSlideTimer = null;
             }
-            resetAutoSlide() { /* disabled */ }
+            resetAutoSlide() { }
         }
 
         document.addEventListener('DOMContentLoaded', () => { new ProjectModal(); });
@@ -914,17 +1242,286 @@
         // Enhanced project card hover effects
         document.querySelectorAll('.project-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-15px) rotateX(8deg)';
-                this.style.boxShadow = '0 25px 50px rgba(0, 255, 65, 0.4)';
+                this.style.transform = 'translateY(-20px) rotateX(10deg) scale(1.03)';
+                this.style.boxShadow = '0 30px 60px rgba(0, 255, 65, 0.5), 0 0 100px rgba(0, 255, 65, 0.3)';
                 const icon = this.querySelector('.project-image');
-                icon.style.transform = 'scale(1.05)';
+                icon.style.transform = 'scale(1.1) translateZ(20px)';
             });
             card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) rotateX(0deg)';
-                this.style.boxShadow = '0 20px 40px rgba(0, 255, 65, 0.3)';
+                this.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
+                this.style.boxShadow = '';
                 const icon = this.querySelector('.project-image');
-                icon.style.transform = 'scale(1)';
+                icon.style.transform = 'scale(1) translateZ(0)';
             });
+            
+            // 3D tilt effect based on mouse position
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                this.style.transform = `translateY(-20px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+            });
+        });
+        
+        // Parallax scrolling effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.hero-content, .matrix-bg');
+            parallaxElements.forEach(el => {
+                const speed = el.classList.contains('hero-content') ? 0.5 : 0.3;
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+        
+        // Magnetic button effect
+        document.querySelectorAll('.cta-button, .modal-link').forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const distance = Math.sqrt(x * x + y * y);
+                const maxDistance = 100;
+                
+                if (distance < maxDistance) {
+                    const pull = 1 - (distance / maxDistance);
+                    this.style.transform = `translate(${x * pull * 0.3}px, ${y * pull * 0.3}px) scale(${1 + pull * 0.1})`;
+                }
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(0, 0) scale(1)';
+            });
+        });
+        
+        // Text reveal on scroll with stagger
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const textObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.about-text p, .timeline-item, .skill-card h3').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            textObserver.observe(el);
+        });
+        
+        // Create floating orbs
+        function createFloatingOrbs() {
+            for (let i = 0; i < 5; i++) {
+                const orb = document.createElement('div');
+                orb.classList.add('floating-orb');
+                orb.style.width = `${Math.random() * 200 + 100}px`;
+                orb.style.height = orb.style.width;
+                orb.style.left = `${Math.random() * 100}%`;
+                orb.style.top = `${Math.random() * 100}%`;
+                orb.style.animationDelay = `${Math.random() * 5}s`;
+                orb.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                document.body.appendChild(orb);
+            }
+        }
+        createFloatingOrbs();
+        
+        // Navbar hide on scroll down, show on scroll up
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('nav');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                navbar.classList.add('nav-hidden');
+            } else {
+                // Scrolling up
+                navbar.classList.remove('nav-hidden');
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, false);
+        
+        // Certificate cards stagger animation
+        const certObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                    }, index * 150);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.cert-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px) scale(0.9)';
+            card.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            certObserver.observe(card);
+        });
+        
+        // Ripple effect on click
+        document.querySelectorAll('.project-card, .skill-card, .cert-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                const ripple = document.createElement('div');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(0, 255, 65, 0.5);
+                    width: 0;
+                    height: 0;
+                    pointer-events: none;
+                `;
+                
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                ripple.animate([
+                    { width: '0px', height: '0px', opacity: 1 },
+                    { width: '500px', height: '500px', opacity: 0, transform: 'translate(-250px, -250px)' }
+                ], {
+                    duration: 600,
+                    easing: 'ease-out'
+                }).onfinish = () => ripple.remove();
+            });
+        });
+        
+        // Dynamic cursor effect
+        const cursor = document.createElement('div');
+        cursor.style.cssText = `
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff41;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            display: none;
+        `;
+        document.body.appendChild(cursor);
+        
+        const cursorGlow = document.createElement('div');
+        cursorGlow.style.cssText = `
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #00ff41;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 10px #00ff41;
+            display: none;
+        `;
+        document.body.appendChild(cursorGlow);
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.display = 'block';
+            cursorGlow.style.display = 'block';
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorGlow.style.left = (e.clientX + 6) + 'px';
+            cursorGlow.style.top = (e.clientY + 6) + 'px';
+        });
+        
+        document.querySelectorAll('a, button, .project-card, .skill-card, .cert-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(1.5)';
+                cursor.style.borderColor = '#fff';
+                cursorGlow.style.background = '#fff';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.borderColor = '#00ff41';
+                cursorGlow.style.background = '#00ff41';
+            });
+        });
+        
+        // Section number counter animation
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = Math.floor(target);
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start);
+                }
+            }, 16);
+        }
+        
+        // Tech stack wave animation
+        document.querySelectorAll('.tech-tag').forEach((tag, index) => {
+            tag.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s both`;
+        });
+        
+        // Random code snippets floating effect
+        function createCodeSnippet() {
+            const snippets = ['{ }', '< >', '( )', '[ ]', '/* */', '// ', '=> ', ':: '];
+            const snippet = document.createElement('div');
+            snippet.textContent = snippets[Math.floor(Math.random() * snippets.length)];
+            snippet.style.cssText = `
+                position: fixed;
+                color: rgba(0, 255, 65, 0.3);
+                font-family: 'Courier New', monospace;
+                font-size: ${Math.random() * 20 + 10}px;
+                pointer-events: none;
+                z-index: 0;
+            `;
+            snippet.style.left = Math.random() * window.innerWidth + 'px';
+            snippet.style.top = window.innerHeight + 'px';
+            document.body.appendChild(snippet);
+            
+            const duration = Math.random() * 5000 + 5000;
+            snippet.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 0 },
+                { transform: 'translateY(-50px) rotate(45deg)', opacity: 0.6 },
+                { transform: `translateY(-${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: duration,
+                easing: 'linear'
+            }).onfinish = () => snippet.remove();
+        }
+        
+        setInterval(createCodeSnippet, 2000);
+        
+        // Smooth reveal for timeline items
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'slideIn 0.8s ease forwards';
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            timelineObserver.observe(item);
         });
     </script>
 </body>
