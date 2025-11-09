@@ -57,6 +57,80 @@
         .nav-links a:hover {
             border: 1px solid #00ff41; box-shadow: 0 0 15px #00ff41; transform: translateY(-2px);
         }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            z-index: 1001;
+            padding: 0.5rem;
+        }
+        
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: #00ff41;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+            background: #fff;
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(9px, -9px);
+            background: #fff;
+        }
+        
+        .hamburger:hover span {
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.8);
+        }
+        
+        /* Animated background for mobile menu */
+        .nav-links::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 65, 0.03) 2px,
+                rgba(0, 255, 65, 0.03) 4px
+            );
+            animation: scanlines 8s linear infinite;
+            pointer-events: none;
+        }
+        
+        .nav-links::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.1) 0%, transparent 70%);
+            animation: menuGlow 4s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        
+        @keyframes menuGlow {
+            from { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            to { transform: translate(10%, 10%) scale(1.1); opacity: 0.6; }
+        }
 
         /* Hero Section */
         .hero {
@@ -504,20 +578,96 @@
         @media (max-width: 768px) {
             /* Navigation */
             .nav-container {
-                flex-direction: column;
-                padding: 1rem;
-                gap: 1rem;
+                flex-direction: row;
+                padding: 1rem 2rem;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .hamburger {
+                display: flex;
             }
             
             .nav-links {
-                flex-wrap: wrap;
-                gap: 1rem;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                max-width: 300px;
+                background: linear-gradient(135deg, rgba(0, 20, 0, 0.98), rgba(0, 0, 0, 0.98));
+                backdrop-filter: blur(20px);
+                flex-direction: column;
                 justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                border-left: 2px solid #00ff41;
+                box-shadow: -10px 0 30px rgba(0, 255, 65, 0.3);
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                opacity: 0;
+                transform: translateX(50px);
+                animation: slideInRight 0.5s ease forwards;
+            }
+            
+            .nav-links.active li:nth-child(1) { animation-delay: 0.1s; }
+            .nav-links.active li:nth-child(2) { animation-delay: 0.2s; }
+            .nav-links.active li:nth-child(3) { animation-delay: 0.3s; }
+            .nav-links.active li:nth-child(4) { animation-delay: 0.4s; }
+            .nav-links.active li:nth-child(5) { animation-delay: 0.5s; }
+            .nav-links.active li:nth-child(6) { animation-delay: 0.6s; }
+            
+            @keyframes slideInRight {
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
             }
             
             .nav-links a {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.9rem;
+                padding: 0.8rem 1.5rem;
+                font-size: 1.1rem;
+                width: 80%;
+                text-align: center;
+                border: 1px solid #00ff41;
+                border-radius: 10px;
+                background: rgba(0, 255, 65, 0.1);
+                transition: all 0.3s ease;
+            }
+            
+            .nav-links a:hover,
+            .nav-links a:active {
+                background: #00ff41;
+                color: #000;
+                transform: scale(1.05);
+                box-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+            }
+            
+            /* Mobile menu overlay */
+            .menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(5px);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 999;
+            }
+            
+            .menu-overlay.active {
+                opacity: 1;
+                visibility: visible;
             }
             
             /* Hero Section */
@@ -892,6 +1042,11 @@
     <nav>
         <div class="nav-container">
             <div class="logo glitch" data-text="&lt;/DEV&gt;">&lt;/DEV&gt;</div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -902,6 +1057,8 @@
             </ul>
         </div>
     </nav>
+    
+    <div class="menu-overlay"></div>
 
     <section id="home" class="hero">
         <div class="hero-content">
@@ -1295,8 +1452,97 @@
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Close mobile menu after clicking
+                    if (window.innerWidth <= 768) {
+                        hamburger.classList.remove('active');
+                        navLinks.classList.remove('active');
+                        menuOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                }
             });
+        });
+        
+        // Hamburger Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const menuOverlay = document.querySelector('.menu-overlay');
+        
+        function createMenuParticles() {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: ${Math.random() * 4 + 2}px;
+                    height: ${Math.random() * 4 + 2}px;
+                    background: #00ff41;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1002;
+                    box-shadow: 0 0 10px #00ff41;
+                `;
+                
+                const startX = window.innerWidth - 50;
+                const startY = 30;
+                particle.style.left = startX + 'px';
+                particle.style.top = startY + 'px';
+                
+                document.body.appendChild(particle);
+                
+                const angle = (Math.random() * 90 - 45) * (Math.PI / 180);
+                const distance = Math.random() * 150 + 100;
+                const endX = startX + Math.cos(angle) * distance;
+                const endY = startY + Math.sin(angle) * distance;
+                
+                particle.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${endX - startX}px, ${endY - startY}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 800 + 400,
+                    easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+                }).onfinish = () => particle.remove();
+            }
+        }
+        
+        hamburger.addEventListener('click', () => {
+            const wasActive = hamburger.classList.contains('active');
+            
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            
+            // Create particle explosion when opening menu
+            if (!wasActive) {
+                createMenuParticles();
+            }
+            
+            // Prevent body scroll when menu is open
+            if (navLinks.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close menu when clicking overlay
+        menuOverlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Close menu on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
 
         // Intersection Observer for animations
